@@ -1,0 +1,103 @@
+<!-- 单文件版，无需 JSON 文件，直接上传即可使用 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中药查询系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input {
+            width: 300px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 8px;
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+        #details {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>中药查询系统</h1>
+    <input type="text" id="search" placeholder="请输入药物名称进行搜索..." />
+
+    <ul id="medicine-list"></ul>
+
+    <div id="details">
+        <h2>详细信息</h2>
+        <p id="name">名称: </p>
+        <p id="category">类别: </p>
+        <p id="effect">功效: </p>
+        <p id="dosage">用量: </p>
+        <p id="note">注意事项: </p>
+    </div>
+
+    <script>
+        // 将 JSON 数据直接嵌入 JavaScript
+        const medicines = [
+            {
+                "name": "黄芪",
+                "category": "补益药",
+                "effect": "补气固表、托毒排脓、利尿消肿",
+                "dosage": "每日5-10克，煎服或泡茶",
+                "note": "气虚乏力、久病体虚者适用，感冒发热期间慎用"
+            },
+            {
+                "name": "当归",
+                "category": "活血化瘀药",
+                "effect": "补血活血、调经止痛、润肠通便",
+                "dosage": "每日3-6克，煎服或入膳食",
+                "note": "孕妇慎用，月经过多者忌服"
+            }
+        ];
+
+        // 页面加载时显示所有药物
+        window.onload = () => displayMedicines(medicines);
+
+        function displayMedicines(data) {
+            const list = document.getElementById('medicine-list');
+            list.innerHTML = '';
+            data.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+                li.onclick = () => showDetails(index);
+                list.appendChild(li);
+            });
+        }
+
+        function showDetails(index) {
+            const item = medicines[index];
+            document.getElementById('name').textContent = `名称: ${item.name}`;
+            document.getElementById('category').textContent = `类别: ${item.category}`;
+            document.getElementById('effect').textContent = `功效: ${item.effect}`;
+            document.getElementById('dosage').textContent = `用量: ${item.dosage}`;
+            document.getElementById('note').textContent = `注意事项: ${item.note}`;
+        }
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            const keyword = e.target.value.trim();
+            const filtered = medicines.filter(item => item.name.includes(keyword));
+            displayMedicines(filtered);
+        });
+    </script>
+</body>
+</html>
